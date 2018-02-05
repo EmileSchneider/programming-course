@@ -1,0 +1,19 @@
+.Presentation {
+  text-align: center;
+}
+
+
+.Presentation-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.Presentation-title {
+  font-size: 1.5em;
+}
+
+.Presentation-intro {
+  font-size: large;
+}
