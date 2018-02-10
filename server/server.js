@@ -1,89 +1,47 @@
-// server.js
+const express = require('express');
 
-// BASE SETUP
-// =============================================================================
+const app = express();
+const port = process.env.PORT || 5000;
 
-// call the packages we need
-var express    = require('express');        // call express
-var app        = express();                 // define our app using express
-var bodyParser = require('body-parser');
-
-// configure app to use bodyParser()
-// this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-var port = process.env.PORT || 8080;        // set our port
-
-// ROUTES FOR OUR API
-// =============================================================================
-var router = express.Router();              // get an instance of the express
-
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', function(req, res) {
-  res.json({ message: 'hooray! welcome to our api!' });
-});
-
-router.get('/presentation', function(req, res){
-  res.json({ presentation: ['Slide1', 'Slide2'], name: 'test', indizes: 2 });
-})
-
-router.get('/code', function(req, res){
-  res.json({ code: '(define (square x) ( * x x ))' });
-})
-
-router.get('/presentation_test', function(req, res){
-  res.json({ presentation: ['Slide1', 'Slide2'] });
-})
-// more routes for our API will happen here
-// ROUTES FOR OUR API
-// =============================================================================
-var router = express.Router();              // get an instance of the express Router
-
-// middleware to use for all requests
-router.use(function(req, res, next) {
-    // do logging
-    console.log('Something is happening.');
-    next(); // make sure we go to the next routes and don't stop here
+app.get('/api/hello', (req, res) => {
+  res.send({ express: 'Hello From Express' });
 });
 
 
-// more routes for our API will happen here
-
-router.route('/questions')
-
-    // create a bear (accessed at POST http://localhost:8080/api/bears)
-    .post(function(req, res) {
-
-        var question = {text: req.body.text};      // create a new instance of the Bear model
-        // save the bear and check for errors
-        bear.save(function(err) {
-            if (err)
-                res.send(err);
-
-            res.json({ message: 'Bear created!' });
-        });
-
-    });
-
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
-app.use('/api', router);
-
-// START THE SERVER
-// =============================================================================
-app.listen(port);
-console.log('Magic happens on port ' + port);
-
-
-
-var mongoose   = require('mongoose');
-mongoose.connect('mongodb://admin:admin@ds225308.mlab.com:25308/programming-course');
-
-var Schema       = mongoose.Schema;
-
-var QuestionSchema   = new Schema({
-    question: String
+app.get('api/presentation/markdown', (req, res) => {
+  res.send({ markdonw: '# First Text \n\n This is the first text'});
 });
 
-module.exports = mongoose.model('Question', QuestionSchema);
+app.get('api/presentation/code', (req, res) => {
+  res.send({ code: '(define (sqaure x) (* x x))'});
+});
+
+
+app.get('api/roadmap/lectures', (req, res) => {
+  res.json({
+    first: {
+      header: 'Abstraction',
+      1: 'procedures',
+      2: 'recursion',
+      3: 'data',
+      4: 'pair',
+      5: 'glue',
+    },
+    second: {
+      header: 'Algorithm and Datastructure',
+      1: 'List',
+      2: 'Array',
+      3: 'Graph',
+      4: 'Sort',
+      5: 'Search',
+    },
+    third: {
+      header: 'State, OOP and Software Design',
+      1: 'State',
+      2: 'OOP',
+      3: 'Design Pattern',
+    }
+  });
+})
+
+app.listen(port, () => console.log(`Listening on port ${port}`));
