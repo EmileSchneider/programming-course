@@ -59,8 +59,46 @@ For example:
 Expressions which combine several expressions inside ( ... ) are called combinations.
 The leftmost element in the list is called the operator, and the other elements are called operands.
 
+There is no limit to the depth of such nesteing:
+
+```scheme 
+(+ (* 3 (+ (* 2 4) (+ 3 5))) (+ (- 10 7) 6))
+```
+What is the result of this expression?
+
+If we follow the formatting convetion knows as pretty-printing, in which each long combination is written so 
+that the operands are aligned vertically. The resulting indentations display clearly the structure of the expression.
+
 
 #### Naming And Enviroment
+
+A critical aspect of a programming language is the means it provides for using names to refer to computational objects. We say that the name identifies a variable whose value is the object.
+
+In Scheme we have a primitive expression to name things ```define```.
+
+```scheme
+(define size 2)
+```
+
+Now we have associate the value ```2``` to the name ```size```. So now if we type into the Scheme interpreter:
+```scheme
+size
+2
+(* 5 size)
+10
+```
+we will get those results.
+
+Further examples:
+```scheme
+(define pi 3.14159)
+(define radius 10)
+(* pi (* radius radius))
+314.159
+(define circumference (* 2 pi radius))
+circumference
+62.8318
+```
 
 #### Compound Procedures
 
