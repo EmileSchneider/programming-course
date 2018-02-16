@@ -102,6 +102,14 @@ circumference
 
 #### Compound Procedures
 
+Before we tackle the issue of compound procedures, we need to clarify how the list interpreter is 
+evaluation procedures. 
+In evaluating combinations the interpreter is itself following a procedure.
+
+- to evaluate a combination, do the following:
+  1. evaluate the subexpressions of the combination
+  2. apply the procedure that is the value of the leftmost subexpression (the operator) to the arguments that are the values of the other subexpressions (the operands). 
+
 #### Recursion
 
 #### Iterative
