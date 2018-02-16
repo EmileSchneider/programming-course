@@ -100,8 +100,6 @@ circumference
 62.8318
 ```
 
-#### Compound Procedures
-
 Before we tackle the issue of compound procedures, we need to clarify how the list interpreter is 
 evaluation procedures. 
 In evaluating combinations the interpreter is itself following a procedure.
@@ -109,10 +107,118 @@ In evaluating combinations the interpreter is itself following a procedure.
 - to evaluate a combination, do the following:
   1. evaluate the subexpressions of the combination
   2. apply the procedure that is the value of the leftmost subexpression (the operator) to the arguments that are the values of the other subexpressions (the operands). 
+  
+We observe that the Evaluation Procedure calls itself. This behavior is called recursion. We will tackle the interesting
+aspects of recursion later.
+ 
+#### Compound Procedures
 
-#### Recursion
+Procedure definition, like name definition is an abstraction technique, altough a much more powerful one.
+It helps us give compound operations a name and referre to it as a unit. 
 
-#### Iterative
+Lets look at an example:
+
+To square something, a given number x for example, means to multipy it by itself.
+
+We can formulate this in Scheme like this
+```scheme
+(define (square x) (* x x))
+```
+Now we can use square like this:
+```scheme
+(square 21)
+441
+
+(square (+ 2 5))
+49
+
+(square (square 3))
+81
+```
+The general form of a procedure definition is
+```scheme
+(define (<name> <formal parameters>) <body>)
+```
+
+We can even use procedures inside new procedure definitions, for example the sum of squares
+can be express as
+```scheme
+(+ (square x) (square y)
+```
+We can easily define a procedure sum-of-squares that, given any two numbers as arguments, produces the sum of their squares:
+```scheme
+(define (sum-of-squares x y)
+  (+ (square x) (square y)))
+
+(sum-of-squares 3 4)
+25
+```
+
+- define a procedure that calculates the pythagoriean theorem
+
+#### Conditional Expressions and Predicates
+
+The expressive power of the class of procedures that we can define at this point is very limited, because we have no way to make tests and to perform different operations depending on the result of a test.
+
+Lets implement a function that computes the absolute of a number.
+
+This means given a number x the functions either returns:
+```
+x if x > 0;
+0 if x = 0;
+-x if x < 0;
+```
+
+To implement this case analysis we use a special form in lisp called cond.
+
+```scheme
+(define (abs x)
+  (cond ((> x 0) x)
+        ((= x 0) 0)
+        ((< x 0) (- x))))
+```
+
+The general form of a conditional expression is:
+
+```scheme
+(cond (<p1> <e1>)
+      (<p2> <e2>)
+      
+      (<pn> <en>))
+```      
+
+Conditional expressions are evaluated as follows. The predicate <p1> is evaluated first. If its value is false, then <p2> is evaluated. If <p2>'s value is also false, then <p3> is evaluated. This process continues until a predicate is found whose value is true, in which case the interpreter returns the value of the corresponding consequent expression <e> of the clause as the value of the conditional expression. If none of the <p>'s is found to be true, the value of the cond is undefined.
+
+
+#### Example Square Root
+
+
+#### Procedures as Black Box Abstractions
+
+///Procedural decomposition of the squareroot program.
+
+Each procedure accomplishes an identifiable task that can be used as a module in defining other procedures.
+
+We are not at that moment concerned with how the procedure computes its result, only with the fact that it computes the expected results. The details of how the result is computed can be suppressed, to be considered at a later time.
+
+##### Local names
+
+One detail of a procedure's implementation that should not matter to the user of the procedure is the implementer's choice of names for the procedure's formal parameters. Thus, the following procedures should not be distinguishable:
+
+```scheme
+(define (square x) (* x x))
+
+(define (square y) (* y y))
+```
+
+The parameter names of a procedure must be local to the body of the procedure.
+
+A formal parameter of a procedure has a very special role in the procedure definition, in that it doesn't matter what name the formal parameter has. Such a name is called a bound variable, and we say that the procedure definition binds its formal parameters.
+
+The meaning of a procedure definition is unchanged if a bound variable is consistently renamed throughout the definition.26 If a variable is not bound, we say that it is free. 
+
+The set of expressions for which a binding defines a name is called the scope of that name. In a procedure definition, the bound variables declared as the formal parameters of the procedure have the body of the procedure as their scope.
+
 
 #### Big Oh Notation, Time and Space
 
