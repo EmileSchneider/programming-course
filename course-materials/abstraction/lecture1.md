@@ -409,7 +409,56 @@ for small values of dx. We can express this directly as a procedure:
 #### Map
 
 #### lambda
+it would be more convenient to have a way to directly specify ``the procedure that returns its input incremented by 4'' and ``the procedure that returns the reciprocal of its input times its input plus 2.'' We can do this by introducing the special form lambda, which creates procedures. Using lambda we can describe what we want as
+```scheme
+(lambda (x) (+ x 4))
+```
+and
+```scheme
+(lambda (x) (/ 1.0 (* x (+ x 2))))
+```
+Then our pi-sum procedure can be expressed without defining any auxiliary procedures as
+```scheme
+(define (pi-sum a b)
+  (sum (lambda (x) (/ 1.0 (* x (+ x 2))))
+       a
+       (lambda (x) (+ x 4))
+       b))
+```
+Again using lambda, we can write the integral procedure without having to define the auxiliary procedure add-dx:
+```scheme
+(define (integral f a b dx)
+  (* (sum f
+          (+ a (/ dx 2.0))
+          (lambda (x) (+ x dx))
+          b)
+     dx))
+```
+In general, lambda is used to create procedures in the same way as define, except that no name is specified for the procedure:
+```scheme
+(lambda (<formal-parameters>) <body>)
+```
+The resulting procedure is just as much a procedure as one that is created using define. The only difference is that it has not been associated with any name in the environment. In fact,
 
+```scheme
+(define (plus4 x) (+ x 4))
+```
+is equivalent to
+```scheme
+(define plus4 (lambda (x) (+ x 4)))
+```
+We can read a lambda expression as follows:
+```scheme
+    (lambda             (x)             (+    x     4))
+ ```                                               
+ the procedure   of an argument x  that adds  x and 4
+
+Like any expression that has a procedure as its value, a lambda expression can be used as the operator in a combination such as
+```scheme
+((lambda (x y z) (+ x y (square z))) 1 2 3)
+12
+```
+or, more generally, in any context where we would normally use a procedure name.
 
 
 ## Abstraction With Data
