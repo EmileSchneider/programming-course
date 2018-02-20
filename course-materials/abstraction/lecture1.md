@@ -243,6 +243,44 @@ which translates readily into the procedure
       (* b (expt b (- n 1)))))
 ```
 
+This is a linear recursive process, which requires (n) steps and (n) space. Just as with factorial, we can readily formulate an equivalent linear iteration:
+
+```scheme
+(define (expt b n)
+  (expt-iter b n 1))
+
+(define (expt-iter b counter product)
+  (if (= counter 0)
+      product
+      (expt-iter b
+                (- counter 1)
+                (* b product)))) 
+```
+
+This version requires (n) steps and (1) space.
+
+We can compute exponentials in fewer steps by using successive squaring. For instance, rather than computing b8 as
+
+
+we can compute it using three multiplications:
+
+
+This method works fine for exponents that are powers of 2. We can also take advantage of successive squaring in computing exponentials in general if we use the rule
+
+
+We can express this method as a procedure:
+
+```scheme
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (square (fast-expt b (/ n 2))))
+        (else (* b (fast-expt b (- n 1))))))
+```
+where the predicate to test whether an integer is even is defined in terms of the primitive procedure remainder by
+
+(define (even? n)
+  (= (remainder n 2) 0))
+
 
 #### Higher Order Procedures
 
