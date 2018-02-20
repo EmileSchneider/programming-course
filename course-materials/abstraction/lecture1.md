@@ -222,6 +222,28 @@ The set of expressions for which a binding defines a name is called the scope of
 
 #### Big Oh Notation, Time and Space
 
+Let n be a parameter that measures the size of the problem, and let R(n) be the amount of resources the process requires for a problem of size n. In our previous examples we took n to be the number for which a given function is to be computed, but there are other possibilities. For instance, if our goal is to compute an approximation to the square root of a number, we might take n to be the number of digits accuracy required. For matrix multiplication we might take n to be the number of rows in the matrices. In general there are a number of properties of the problem with respect to which it will be desirable to analyze a given process. Similarly, R(n) might measure the number of internal storage registers used, the number of elementary machine operations performed, and so on. In computers that do only a fixed number of operations at a time, the time required will be proportional to the number of elementary machine operations performed.
+
+We say that R(n) has order of growth (f(n)), written R(n) = (f(n)) (pronounced \`theta of f(n)''), if there are positive constants k1 and k2 independent of n such that
+
+
+for any sufficiently large value of n. (In other words, for large n, the value R(n) is sandwiched between k1f(n) and k2f(n).)
+
+##### Exponentiation 
+
+Consider the problem of computing the exponential of a given number. We would like a procedure that takes as arguments a base b and a positive integer exponent n and computes bn. One way to do this is via the recursive definition
+
+
+which translates readily into the procedure
+
+```scheme
+(define (expt b n)
+  (if (= n 0)
+      1
+      (* b (expt b (- n 1)))))
+```
+
+
 #### Higher Order Procedures
 
 #### Map
