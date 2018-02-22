@@ -462,23 +462,64 @@ or, more generally, in any context where we would normally use a procedure name.
 
 
 ## Abstraction With Data
+
 The basic idea of data abstraction is to structure the programs that are to use compound data objects so that they operate on ''abstract data.'' That is, our programs should use data in such a way as to make no assumptions about the data that are not strictly necessary for performing the task at hand. At the same time, a \`\`concrete'' data representation is defined independent of the programs that use the data. The interface between these two parts of our system will be a set of procedures, called selectors and constructors, that implement the abstract data in terms of the concrete representation. To illustrate this technique, we will consider how to design a set of procedures for manipulating rational numbers.
 
 Suppose we want to do arithmetic with rational numbers. We want to be able to add, subtract, multiply, and divide them and to test whether two rational numbers are equal.
 
 Let us begin by assuming that we already have a way of constructing a rational number from a numerator and a denominator. We also assume that, given a rational number, we have a way of extracting (or selecting) its numerator and its denominator. Let us further assume that the constructor and selectors are available as procedures:
 
-(make-rat <n> <d>) returns the rational number whose numerator is the integer <n> and whose denominator is the integer <d>.
+- (make-rat <n> <d>) returns the rational number whose numerator is the integer <n> and whose denominator is the integer <d>.
 
-(numer <x>) returns the numerator of the rational number <x>.
+- (numer <x>) returns the numerator of the rational number <x>.
 
-(denom <x>) returns the denominator of the rational number <x>
+- (denom <x>) returns the denominator of the rational number <x>
   
-#### cons
+ We are using here a powerful strategy of synthesis: wishful thinking. We haven't yet said how a rational number is represented, or how the procedures numer, denom, and make-rat should be implemented. Even so, if we did have these three procedures, we could then add, subtract, multiply, divide, and test equality by using the following relations:
 
-#### car
 
-#### cdr
+//images
+
+
+
+We can express these rules as procedures:
+
+
+```scheme
+(define (add-rat x y)
+  (make-rat (+ (* (numer x) (denom y))
+               (* (numer y) (denom x)))
+            (* (denom x) (denom y))))
+(define (sub-rat x y)
+  (make-rat (- (* (numer x) (denom y))
+               (* (numer y) (denom x)))
+            (* (denom x) (denom y))))
+(define (mul-rat x y)
+  (make-rat (* (numer x) (numer y))
+            (* (denom x) (denom y))))
+(define (div-rat x y)
+  (make-rat (* (numer x) (denom y))
+            (* (denom x) (numer y))))
+(define (equal-rat? x y)
+  (= (* (numer x) (denom y))
+     (* (numer y) (denom x))))
+```
+
+Now we have the operations on rational numbers defined in terms of the selector and constructor procedures numer, denom, and make-rat. But we haven't yet defined these. What we need is some way to glue together a numerator and a denominator to form a rational number.
+ 
+### Pairs 
+
+To enable us to implement the concrete level of our data abstraction, our language provides a compound structure called a pair, which can be constructed with the primitive procedure cons. This procedure takes two arguments and returns a compound data object that contains the two arguments as parts. Given a pair, we can extract the parts using the primitive procedures car and cdr.2 Thus, we can use cons, car, and cdr as follows:
+
+```scheme
+(define x (cons 1 2))
+
+(car x)
+1
+
+(cdr x)
+2
+```
 
 ### Hierachical Data
 ### Symbolic Data
