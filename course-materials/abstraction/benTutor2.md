@@ -1,4 +1,4 @@
-#### Procedures as Black Box Abstractions
+# Procedures as Black Box Abstractions
 
 ///Procedural decomposition of the squareroot program.
 
@@ -82,6 +82,7 @@ We can express this method as a procedure:
         (else (* b (fast-expt b (- n 1))))))
 ```
 where the predicate to test whether an integer is even is defined in terms of the primitive procedure remainder by
-
+```scheme
 (define (even? n)
   (= (remainder n 2) 0))
+```
