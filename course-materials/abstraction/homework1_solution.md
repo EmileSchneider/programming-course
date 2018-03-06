@@ -20,12 +20,12 @@ where
 (define (average x y)
   (/ (+ x y) 2))
 ```
-We also have to say what we mean by ``good enough.'' The following will do for illustration, but it is not really a very good test. (See exercise 1.7.) The idea is to improve the answer until it is close enough so that its square differs from the radicand by less than a predetermined tolerance (here 0.001):22
+We also have to say what we mean by \`\`good enough.'' The following will do for illustration, but it is not really a very good test.The idea is to improve the answer until it is close enough so that its square differs from the radicand by less than a predetermined tolerance (here 0.001):
 ```scheme
 (define (good-enough? guess x)
   (< (abs (- (square guess) x)) 0.001))
 ```
-Finally, we need a way to get started. For instance, we can always guess that the square root of any number is 1:23
+Finally, we need a way to get started. For instance, we can always guess that the square root of any number is 1:
 ```scheme
 (define (sqrt x)
   (sqrt-iter 1.0 x))
